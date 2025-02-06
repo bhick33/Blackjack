@@ -1,6 +1,7 @@
 from deck import Deck
 from player import Player
 from dealer import Dealer
+from display import draw_hand
 
 def deal_cards(deck):
     deck.shuffle()
@@ -13,32 +14,41 @@ def deal_cards(deck):
     return p1, dealer  # Return the player and dealer
 
 def check_cards(p1, p2):
+    print("\n--- Showdown! ---")  # Visual separator
+    print("Your hand:", p1.hand_value)
+    print("Dealer's hand:", p2.hand_value)
+
     if p1.hand_value > p2.hand_value and p1.hand_value <= 21:
-        print(f"Your hand: {p1.hand_value} beats Computer's hand: {p2.hand_value}\nYou Win!")
+        print("🎉 You Win! 🎉")  # Emoji and engaging language
     elif p1.hand_value < p2.hand_value or p1.hand_value > 21:
-        print(f"Your hand: {p1.hand_value} loses to Computer's hand: {p2.hand_value}\nYou Lose!")
+        print("😔 You Lose! 😔")  # Emoji and engaging language
     else:
-        print(f"Your hand: {p1.hand_value} and Computer's hand: {p2.hand_value}\nIt's a Draw!!")
+        print("🤝 It's a Draw! 🤝")  # Emoji and engaging language
+        
+
 
 while True:
     deck = Deck()
-    player1, dealer = deal_cards(deck)  # Get player and dealer
+    try:
+        player1, dealer = deal_cards(deck)  # Get player and dealer
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
     # Player 1 turn
-    print("Your hand:")
-    print(player1)
+    # Player's hand
+    draw_hand('Your', player1)
     while player1.hand_value < 21:
         choice = input("Hit or Stand? (h/s): ")
         if choice.lower() == 'h':
             player1.hit()
-            print("Your hand:")
-            print(player1)
-        else:
+            draw_hand('Your', player1)
+        elif choice.lower() == 's':
             break
+        else:
+            print("Invalid input. Please enter 'h' to hit or 's' to stand.")
 
     # Dealer turn
-    print("\nDealer's hand:")
-    print(dealer)
+    draw_hand("Dealer's", dealer)
     dealer.dealer_turn()  # Call the dealer_turn method
 
     # Check for dealer bust
@@ -49,5 +59,9 @@ while True:
         check_cards(player1, dealer)
 
     answer = input("\nDo you want to play again? (y/n): ")
-    if answer.lower() != 'y':
+    while answer.lower() not in ['y', 'n']:
+        print("Invalid input. Please enter 'y' or 'n'.")
+        answer = input("\nDo you want to play again? (y/n): ")
+
+    if answer.lower()!= 'y':
         break
