@@ -8,4 +8,4 @@ class Dealer(Player):
     def dealer_turn(self):
         while self.hand_value < 17:  # Dealer hits until hand value is 17 or more
             self.hit()
-            draw_hand("Dealer's", self.hand)
+            draw_hand("Dealer's", self.hand())

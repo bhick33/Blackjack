@@ -35,8 +35,7 @@ while True:
         print(f"An error occurred: {e}")
 
     # Player 1 turn
-    # Player's hand
-    draw_hand('Your', player1)
+    draw_hand('Your', player1) # Player's hand
     while player1.hand_value < 21:
         choice = input("Hit or Stand? (h/s): ")
         if choice.lower() == 'h':
