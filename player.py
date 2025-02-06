@@ -24,4 +24,4 @@ class Player:
         new_str = ""
         for card in self.hand:
             new_str += str(card) + "\n"
-        return f'\n{new_str}\nHand value: {self.hand_value}'
+        return f'{new_str}Hand value: {self.hand_value}'
