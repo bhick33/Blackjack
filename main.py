@@ -1,15 +1,16 @@
 from deck import Deck
 from player import Player
+from dealer import Dealer
 
 def deal_cards(deck):
     deck.shuffle()
     p1 = Player(deck)
-    p2 = Player(deck)
-    players = [p1, p2]
+    dealer = Dealer(deck)  # Create a Dealer instance
+    players = [p1, dealer]
     for player in players:
         player.hit()
         player.hit()
-    return players
+    return p1, dealer  # Return the player and dealer
 
 def check_cards(p1, p2):
     if p1.hand_value > p2.hand_value and p1.hand_value <= 21:
@@ -21,7 +22,7 @@ def check_cards(p1, p2):
 
 while True:
     deck = Deck()
-    player1, player2 = deal_cards(deck)
+    player1, dealer = deal_cards(deck)  # Get player and dealer
 
     # Player 1 turn
     print("Your hand:")
@@ -35,17 +36,18 @@ while True:
         else:
             break
 
-    # Player 2 (dealer) turn (basic logic for now)
-    print("\nComputer's hand:")
-    print(player2)  # Show dealer's hand
+    # Dealer turn
+    print("\nDealer's hand:")
+    print(dealer)
+    dealer.dealer_turn()  # Call the dealer_turn method
 
-    # Check for bust
-    if player1.hand_value > 21:
-        print("You Busted! Computer Wins!")
+    # Check for dealer bust
+    if dealer.hand_value > 21:
+        print("Dealer Busted! You Win!")
     else:
         # Check who wins
-        check_cards(player1, player2)
+        check_cards(player1, dealer)
 
     answer = input("\nDo you want to play again? (y/n): ")
-    if answer.lower()!= 'y':
+    if answer.lower() != 'y':
         break
