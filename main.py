@@ -1,7 +1,6 @@
 from deck import Deck
 from player import Player
 
-
 def deal_cards(deck):
     deck.shuffle()
     p1 = Player(deck)
@@ -10,7 +9,6 @@ def deal_cards(deck):
     for player in players:
         player.hit()
         player.hit()
-    
     return players
 
 def check_cards(p1, p2):
@@ -23,12 +21,31 @@ def check_cards(p1, p2):
 
 while True:
     deck = Deck()
-
     player1, player2 = deal_cards(deck)
-    
-    answer = input("do you want to play on?")
-    
-    if answer.lower() == 'n':
-        break
+
+    # Player 1 turn
+    print("Your hand:")
+    print(player1)
+    while player1.hand_value < 21:
+        choice = input("Hit or Stand? (h/s): ")
+        if choice.lower() == 'h':
+            player1.hit()
+            print("Your hand:")
+            print(player1)
+        else:
+            break
+
+    # Player 2 (dealer) turn (basic logic for now)
+    print("\nComputer's hand:")
+    print(player2)  # Show dealer's hand
+
+    # Check for bust
+    if player1.hand_value > 21:
+        print("You Busted! Computer Wins!")
     else:
-        print(check_cards(player1, player2))
+        # Check who wins
+        check_cards(player1, player2)
+
+    answer = input("\nDo you want to play again? (y/n): ")
+    if answer.lower()!= 'y':
+        break
